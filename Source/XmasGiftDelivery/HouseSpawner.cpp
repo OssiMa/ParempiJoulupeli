@@ -13,9 +13,9 @@ AHouseSpawner::AHouseSpawner()
 	currentTime = 0.0f;
 
 	spawnRotation.ZeroRotator;
-	spawnLocation.X = 0.0f;
+	spawnLocation.X = 200.0f;
 	spawnLocation.Y = 0.0f;
-	spawnLocation.Z = 0.0f;
+	spawnLocation.Z = -80.0f;
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +34,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	if (currentTime >= timerTime)
 	{
+		//Set some spawn parameters
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 		spawnParams.Instigator = Instigator;
@@ -43,6 +44,5 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 		currentTime = 0.0f;
 	}
-
 }
 

@@ -23,6 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
-	
+	/*
+	UPROPERTY(VisibleAnywhere)
+		class UBoxComponent* MyCollisionBox;
+
+	UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyOndex, bool bFromSweep, const FHitResult& SweepResult);
+	*/
 };
