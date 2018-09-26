@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -24,9 +22,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//float SpawnHouses(float DeltaTime);
-
 	float currentTime;
+	int houseNumber;
+
+	FString numberString;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float timerTime;
@@ -35,6 +34,6 @@ public:
 
 	FRotator spawnRotation;
 
-	UPROPERTY(EditAnywhere, Category = "Spawnable object")
-		TSubclassOf<AHouseParent> spawnableObject;
+	UPROPERTY(EditAnywhere, Category = "Spawnable objects")
+		TArray<TSubclassOf<AHouseParent>> spawnableObjects;
 };

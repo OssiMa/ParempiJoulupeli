@@ -1,13 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "HouseSpawner.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Engine.h"
 
 
 // Sets default values
 AHouseSpawner::AHouseSpawner()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	currentTime = 0.0f;
@@ -22,7 +21,7 @@ AHouseSpawner::AHouseSpawner()
 void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -34,13 +33,20 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	if (currentTime >= timerTime)
 	{
+		//Generate random number for the house spawner
+		houseNumber = FMath::RandRange(0, 2);
+
+		//Debug message
+		numberString = FString::SanitizeFloat(houseNumber);
+		GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("The random number is ") + numberString);
+
 		//Set some spawn parameters
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 		spawnParams.Instigator = Instigator;
 
 		//Spawn the object
-		AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObject, spawnLocation, spawnRotation, spawnParams);
+		AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 
 		currentTime = 0.0f;
 	}
