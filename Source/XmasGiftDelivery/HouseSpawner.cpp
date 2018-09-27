@@ -21,7 +21,6 @@ AHouseSpawner::AHouseSpawner()
 void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
@@ -50,5 +49,18 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 		currentTime = 0.0f;
 	}
+
+	if (allowSpeedingUp) 
+	{
+		timerTime -= 0.01f * DeltaTime;
+	}
+
+	if (timerTime <= lowLimit)
+	{
+		timerTime = lowLimit;
+	}
+
+	numberString2 = FString::SanitizeFloat(timerTime);
+	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
 }
 
