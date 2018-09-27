@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -11,8 +9,8 @@ UCLASS()
 class XMASGIFTDELIVERY_API AHouseSpawner : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AHouseSpawner();
 
@@ -20,21 +18,28 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//float SpawnHouses(float DeltaTime);
-
 	float currentTime;
+	int houseNumber;
+
+	FString numberString;
+	FString numberString2;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float timerTime;
+
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float lowLimit;
+
+	bool allowSpeedingUp = true;
 
 	FVector spawnLocation;
 
 	FRotator spawnRotation;
 
-	UPROPERTY(EditAnywhere, Category = "Spawnable object")
-		TSubclassOf<AHouseParent> spawnableObject;
+	UPROPERTY(EditAnywhere, Category = "Spawnable objects")
+		TArray<TSubclassOf<AHouseParent>> spawnableObjects;
 };
