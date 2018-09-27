@@ -14,7 +14,7 @@ AHouseSpawner::AHouseSpawner()
 	spawnRotation.ZeroRotator;
 	spawnLocation.X = 200.0f;
 	spawnLocation.Y = 0.0f;
-	spawnLocation.Z = -80.0f;
+	spawnLocation.Z = -40.0f;
 }
 
 // Called when the game starts or when spawned
