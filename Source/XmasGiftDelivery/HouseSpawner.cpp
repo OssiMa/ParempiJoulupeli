@@ -21,6 +21,8 @@ AHouseSpawner::AHouseSpawner()
 void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	spawnHouse();
 }
 
 // Called every frame
@@ -30,37 +32,63 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	currentTime = currentTime + 1 * DeltaTime;
 
+	oldCurrentTime = oldCurrentTime + 1 * DeltaTime;
+
 	if (currentTime >= timerTime)
 	{
-		//Generate random number for the house spawner
-		houseNumber = FMath::RandRange(0, 2);
-
-		//Debug message
-		numberString = FString::SanitizeFloat(houseNumber);
-		GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("The random number is ") + numberString);
-
-		//Set some spawn parameters
-		FActorSpawnParameters spawnParams;
-		spawnParams.Owner = this;
-		spawnParams.Instigator = Instigator;
-
-		//Spawn the object
-		AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
+		spawnHouse();
 
 		currentTime = 0.0f;
+	}
+	/*
+	if (oldCurrentTime < 1) 
+	{
+		allowTimeDoubling = true;
+	}*/
+	if (gameTime >= 5 && allowTimeDoubling == true) 
+	{
+		timeDecreaseRatio *= 2;
+
+		gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+		FTimespan::FromSeconds(gameTime);
+
+		//numberString3 = FString::SanitizeFloat(gameTime);
+		//GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
+
+		allowTimeDoubling = false;
+		oldCurrentTime = 0;
 	}
 
 	if (allowSpeedingUp) 
 	{
-		timerTime -= 0.01f * DeltaTime;
+		timerTime -= timeDecreaseRatio * DeltaTime;
 	}
 
 	if (timerTime <= lowLimit)
 	{
 		timerTime = lowLimit;
+		allowSpeedingUp = false;
 	}
 
 	numberString2 = FString::SanitizeFloat(timerTime);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
+}
+
+void AHouseSpawner::spawnHouse() 
+{
+	//Generate random number for the house spawner
+	houseNumber = FMath::RandRange(0, 2);
+
+	//Debug message
+	numberString = FString::SanitizeFloat(houseNumber);
+	GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("The random number is ") + numberString);
+
+	//Set some spawn parameters
+	FActorSpawnParameters spawnParams;
+	spawnParams.Owner = this;
+	spawnParams.Instigator = Instigator;
+
+	//Spawn the object
+	AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 }
 

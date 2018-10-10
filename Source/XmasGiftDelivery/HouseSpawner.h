@@ -22,18 +22,27 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void spawnHouse();
+
+	float gameTime;
 	float currentTime;
+	float oldCurrentTime;
 	int houseNumber;
 
 	FString numberString;
 	FString numberString2;
+	FString numberString3;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float timerTime;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
+		float timeDecreaseRatio;
+
+	UPROPERTY(EditAnywhere, Category = "Timer")
 		float lowLimit;
 
+	bool allowTimeDoubling = true;
 	bool allowSpeedingUp = true;
 
 	FVector spawnLocation;
