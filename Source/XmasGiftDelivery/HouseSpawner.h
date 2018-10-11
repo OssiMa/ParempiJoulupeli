@@ -24,9 +24,11 @@ public:
 
 	void spawnHouse();
 
+	void changeDifficulty();
+
 	float gameTime;
 	float currentTime;
-	float oldCurrentTime;
+	float gameTimer;
 	int houseNumber;
 
 	FString numberString;
@@ -51,4 +53,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Spawnable objects")
 		TArray<TSubclassOf<AHouseParent>> spawnableObjects;
+
+	//AGameModeBase *gamemode;
 };

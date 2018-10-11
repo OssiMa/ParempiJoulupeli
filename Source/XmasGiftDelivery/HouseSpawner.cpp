@@ -1,5 +1,6 @@
 #include "HouseSpawner.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "GameFramework/GameModeBase.h"
 #include "Engine.h"
 
 
@@ -22,6 +23,8 @@ void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
+
 	spawnHouse();
 }
 
@@ -32,7 +35,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	currentTime = currentTime + 1 * DeltaTime;
 
-	oldCurrentTime = oldCurrentTime + 1 * DeltaTime;
+	gameTimer = gameTimer + 1 * DeltaTime;
 
 	if (currentTime >= timerTime)
 	{
@@ -40,23 +43,17 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 		currentTime = 0.0f;
 	}
-	/*
-	if (oldCurrentTime < 1) 
-	{
-		allowTimeDoubling = true;
-	}*/
-	if (gameTime >= 5 && allowTimeDoubling == true) 
-	{
-		timeDecreaseRatio *= 2;
 
-		gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
-		FTimespan::FromSeconds(gameTime);
+	if (gameTimer > 5 && gameTimer < 5.1f || gameTimer > 10 && gameTimer < 10.1f) 
+	{
+		//gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+		//FTimespan::FromSeconds(gameTime);
 
-		//numberString3 = FString::SanitizeFloat(gameTime);
-		//GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
+		changeDifficulty();
+
+		gameTime = GetWorld()->GetTimeSeconds();
 
 		allowTimeDoubling = false;
-		oldCurrentTime = 0;
 	}
 
 	if (allowSpeedingUp) 
@@ -72,6 +69,9 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	numberString2 = FString::SanitizeFloat(timerTime);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
+
+	numberString3 = FString::SanitizeFloat(gameTime);
+	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
 }
 
 void AHouseSpawner::spawnHouse() 
@@ -90,5 +90,10 @@ void AHouseSpawner::spawnHouse()
 
 	//Spawn the object
 	AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
+}
+
+void AHouseSpawner::changeDifficulty() 
+{
+	
 }
 
