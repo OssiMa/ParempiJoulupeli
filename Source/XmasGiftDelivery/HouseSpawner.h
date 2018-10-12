@@ -55,4 +55,8 @@ public:
 		TArray<TSubclassOf<AHouseParent>> spawnableObjects;
 
 	//AGameModeBase *gamemode;
+
+
+	UPROPERTY(EditAnywhere, Category = "Present score")
+		int presentsDelivered;
 };
