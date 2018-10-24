@@ -16,6 +16,13 @@ AHouseSpawner::AHouseSpawner()
 	spawnLocation.X = 200.0f;
 	//spawnLocation.Y = 0.0f;
 	spawnLocation.Z = -40.0f;
+
+	easy.timeDecreaseRatio = 4.0f;
+	easy.houseMoveSpeed = 2.0f;
+
+	medium.timeDecreaseRatio = 3.5f;
+
+	hard.timeDecreaseRatio = 3.0f;
 }
 
 // Called when the game starts or when spawned
@@ -44,22 +51,19 @@ void AHouseSpawner::Tick(float DeltaTime)
 		currentTime = 0.0f;
 	}
 
-	if (gameTimer > 5 && gameTimer < 5.1f || gameTimer > 10 && gameTimer < 10.1f) 
+	if (gameTimer > 5 && gameTimer < 5.01f && presentsDelivered >= 2 || gameTimer > 20 && gameTimer < 20.01f && presentsDelivered >= 2)
 	{
 		//gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 		//FTimespan::FromSeconds(gameTime);
 
-		changeDifficulty();
 
-		gameTime = GetWorld()->GetTimeSeconds();
+		harderDifficulty(HARD);
+
+		//gameTime = GetWorld()->GetTimeSeconds();
 
 		allowTimeDoubling = false;
 	}
-
-	if (allowSpeedingUp) 
-	{
-		timerTime -= timeDecreaseRatio * DeltaTime;
-	}
+	else if (gameTimer )
 
 	if (timerTime <= lowLimit)
 	{
@@ -70,7 +74,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 	numberString2 = FString::SanitizeFloat(timerTime);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
 
-	numberString3 = FString::SanitizeFloat(gameTime);
+	numberString3 = FString::SanitizeFloat(gameTimer);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
 }
 
@@ -92,8 +96,24 @@ void AHouseSpawner::spawnHouse()
 	AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 }
 
-void AHouseSpawner::changeDifficulty() 
+void AHouseSpawner::harderDifficulty(EDifficultyStage)
 {
-	
+	switch (difficultyStage)
+	{
+	case EASY:
+		easy.timeDecreaseRatio = 4.0f;
+		timerTime = easy.timeDecreaseRatio;
+		break;
+	case MEDIUM:
+		medium.timeDecreaseRatio = 3.5f;
+		timerTime = medium.timeDecreaseRatio;
+		break;
+	case HARD:
+		hard.timeDecreaseRatio = 3.0f;
+		timerTime = hard.timeDecreaseRatio;
+		break;
+	default:
+		break;
+	}
 }
 
