@@ -35,9 +35,6 @@ public:
 	// Sets default values for this actor's properties
 	AHouseSpawner();
 
-	FDifficultyCurve easy;
-	FDifficultyCurve medium;
-	FDifficultyCurve hard;
 	EDifficultyStage difficultyStage;
 
 protected:
@@ -50,23 +47,32 @@ public:
 
 	void spawnHouse();
 
-	void harderDifficulty(EDifficultyStage);
+	void harderDifficulty(EDifficultyStage stage);
 
 	float gameTime;
 	float currentTime;
 	float gameTimer;
 	int houseNumber;
 
+	UPROPERTY(EditAnywhere, Category = "House spawning time")
+	float easySpawningTime;
+	UPROPERTY(EditAnywhere, Category = "House spawning time")
+	float mediumSpawningTime;
+	UPROPERTY(EditAnywhere, Category = "House spawning time")
+	float hardSpawningTime;
+
 	FString numberString;
 	FString numberString2;
 	FString numberString3;
+	FString numberString4;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
-		float timerTime;
+		float timeUntilSpawning;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float lowLimit;
 
+	bool canSpawn = true;
 	bool allowTimeDoubling = true;
 	bool allowSpeedingUp = true;
 
