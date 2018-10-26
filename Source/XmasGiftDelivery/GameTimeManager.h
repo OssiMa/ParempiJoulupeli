@@ -6,8 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "TimerManager.h"
+#include "Engine.h"
 #include "HouseSpawner.h"
 #include "GameTimeManager.generated.h"
+
 
 UCLASS()
 class XMASGIFTDELIVERY_API AGameTimeManager : public AActor
@@ -40,4 +42,6 @@ public:
 	float secondTimeCheck;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
 	float thirdTimeCheck;
+
+	int check;
 };

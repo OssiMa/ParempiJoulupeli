@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "math.h"
 #include "HouseParent.h"
 #include "HouseSpawner.generated.h"
 
@@ -11,19 +12,6 @@ enum EDifficultyStage
 	EASY,
 	MEDIUM,
 	HARD
-};
-
-USTRUCT()
-struct FDifficultyCurve
-{
-public:
-
-	GENERATED_BODY()
-		UPROPERTY(EditAnywhere, Category = "DifficultyCurve")
-		float timeDecreaseRatio;
-	UPROPERTY(EditAnywhere, Category = "DifficultyCurve")
-		float houseMoveSpeed;
-	int giftsDelivered;
 };
 
 UCLASS()
@@ -49,17 +37,19 @@ public:
 
 	void harderDifficulty(EDifficultyStage stage);
 
+	UGameInstance* gameInstance;
+
 	float gameTime;
 	float currentTime;
-	float gameTimer;
+	float calculationTimer;
 	int houseNumber;
 
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
-	float easySpawningTime;
+		float easySpawningTime;
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
-	float mediumSpawningTime;
+		float mediumSpawningTime;
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
-	float hardSpawningTime;
+		float hardSpawningTime;
 
 	FString numberString;
 	FString numberString2;
@@ -68,6 +58,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float timeUntilSpawning;
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float timeUntilSpawningReduction;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float lowLimit;

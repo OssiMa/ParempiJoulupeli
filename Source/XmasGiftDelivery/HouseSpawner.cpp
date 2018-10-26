@@ -26,6 +26,9 @@ void AHouseSpawner::BeginPlay()
 	AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 
 	spawnHouse();
+
+	gameInstance = Cast<UGameInstance>(GEngine->GetWorld()->GetGameInstance());
+
 }
 
 // Called every frame
@@ -35,13 +38,33 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	currentTime = currentTime + 1 * DeltaTime;
 
-	//gameTimer = gameTimer + 1 * DeltaTime;
+	calculationTimer = calculationTimer + 1 * DeltaTime;
 
 	if (currentTime >= timeUntilSpawning)
 	{
 		spawnHouse();
 
 		currentTime = 0.0f;
+	}
+	
+	if (calculationTimer >= 5) 
+	{
+		gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+		FTimespan::FromSeconds(gameTime);
+
+		//timeUntilSpawning = pow (2, 1/gameTime);
+
+		if (allowTimeDoubling) 
+		{
+			timeUntilSpawningReduction = timeUntilSpawningReduction - 0.1 * DeltaTime;
+		}
+		
+		if (timeUntilSpawningReduction <= 2.3f) 
+		{
+			allowTimeDoubling = false;
+			timeUntilSpawningReduction = timeUntilSpawningReduction - 0.02 * DeltaTime;
+			timeUntilSpawning = pow(2, timeUntilSpawningReduction);
+		}
 	}
 
 	/*
@@ -59,24 +82,22 @@ void AHouseSpawner::Tick(float DeltaTime)
 	}
 	*/
 
-	/*
 	if (timeUntilSpawning <= lowLimit)
 	{
 		timeUntilSpawning = lowLimit;
 		allowSpeedingUp = false;
 	}
-	*/
 
 	numberString2 = FString::SanitizeFloat(timeUntilSpawning);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
 
-	numberString3 = FString::SanitizeFloat(gameTimer);
+	numberString3 = FString::SanitizeFloat(calculationTimer);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
 }
 
 void AHouseSpawner::spawnHouse() 
 {
-	if (canSpawn) 
+	if (gameInstance.showMainMenu = true) 
 	{
 		//Generate random number for the house spawner
 		houseNumber = FMath::RandRange(0, 2);
