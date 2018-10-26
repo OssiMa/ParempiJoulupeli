@@ -26,6 +26,9 @@ void AHouseSpawner::BeginPlay()
 	AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 
 	spawnHouse();
+
+	gameInstance = Cast<UGameInstance>(GEngine->GetWorld()->GetGameInstance());
+
 }
 
 // Called every frame
@@ -35,65 +38,102 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	currentTime = currentTime + 1 * DeltaTime;
 
-	gameTimer = gameTimer + 1 * DeltaTime;
+	calculationTimer = calculationTimer + 1 * DeltaTime;
 
-	if (currentTime >= timerTime)
+	if (currentTime >= timeUntilSpawning)
 	{
 		spawnHouse();
 
 		currentTime = 0.0f;
 	}
+	
+	if (calculationTimer >= 5) 
+	{
+		gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+		FTimespan::FromSeconds(gameTime);
 
-	if (gameTimer > 5 && gameTimer < 5.1f || gameTimer > 10 && gameTimer < 10.1f) 
+		//timeUntilSpawning = pow (2, 1/gameTime);
+
+		if (allowTimeDoubling) 
+		{
+			timeUntilSpawningReduction = timeUntilSpawningReduction - 0.1 * DeltaTime;
+		}
+		
+		if (timeUntilSpawningReduction <= 2.3f) 
+		{
+			allowTimeDoubling = false;
+			timeUntilSpawningReduction = timeUntilSpawningReduction - 0.02 * DeltaTime;
+			timeUntilSpawning = pow(2, timeUntilSpawningReduction);
+		}
+	}
+
+	/*
+	if (gameTimer > 5 && gameTimer < 5.01f && presentsDelivered >= 2 || gameTimer > 20 && gameTimer < 20.01f && presentsDelivered >= 2)
 	{
 		//gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 		//FTimespan::FromSeconds(gameTime);
 
-		changeDifficulty();
 
-		gameTime = GetWorld()->GetTimeSeconds();
+		//harderDifficulty(HARD);
+
+		//gameTime = GetWorld()->GetTimeSeconds();
 
 		allowTimeDoubling = false;
 	}
+	*/
 
-	if (allowSpeedingUp) 
+	if (timeUntilSpawning <= lowLimit)
 	{
-		timerTime -= timeDecreaseRatio * DeltaTime;
-	}
-
-	if (timerTime <= lowLimit)
-	{
-		timerTime = lowLimit;
+		timeUntilSpawning = lowLimit;
 		allowSpeedingUp = false;
 	}
 
-	numberString2 = FString::SanitizeFloat(timerTime);
+	numberString2 = FString::SanitizeFloat(timeUntilSpawning);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
 
-	numberString3 = FString::SanitizeFloat(gameTime);
+	numberString3 = FString::SanitizeFloat(calculationTimer);
 	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
 }
 
 void AHouseSpawner::spawnHouse() 
 {
-	//Generate random number for the house spawner
-	houseNumber = FMath::RandRange(0, 2);
+	if (canSpawn) 
+	{
+		//Generate random number for the house spawner
+		houseNumber = FMath::RandRange(0, 2);
 
-	//Debug message
-	numberString = FString::SanitizeFloat(houseNumber);
-	GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("The random number is ") + numberString);
+		//Debug message
+		numberString = FString::SanitizeFloat(houseNumber);
+		GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("The random number is ") + numberString);
 
-	//Set some spawn parameters
-	FActorSpawnParameters spawnParams;
-	spawnParams.Owner = this;
-	spawnParams.Instigator = Instigator;
+		//Set some spawn parameters
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = this;
+		spawnParams.Instigator = Instigator;
 
-	//Spawn the object
-	AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
+		//Spawn the object
+		AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
+	}
 }
 
-void AHouseSpawner::changeDifficulty() 
+void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 {
-	
+	switch (stage)
+	{
+	case EASY:
+		timeUntilSpawning = easySpawningTime;
+		break;
+	case MEDIUM:
+		timeUntilSpawning = mediumSpawningTime;
+		break;
+	case HARD:
+		timeUntilSpawning = hardSpawningTime;
+		break;
+	default:
+		break;
+	}
+
+	numberString4 = FString::SanitizeFloat(timeUntilSpawning);
+	GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("Timeuntilspawning is ") + numberString4);
 }
 

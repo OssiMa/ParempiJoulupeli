@@ -2,8 +2,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "math.h"
 #include "HouseParent.h"
 #include "HouseSpawner.generated.h"
+
+UENUM()
+enum EDifficultyStage
+{
+	EASY,
+	MEDIUM,
+	HARD
+};
 
 UCLASS()
 class XMASGIFTDELIVERY_API AHouseSpawner : public AActor
@@ -13,6 +22,8 @@ class XMASGIFTDELIVERY_API AHouseSpawner : public AActor
 public:
 	// Sets default values for this actor's properties
 	AHouseSpawner();
+
+	EDifficultyStage difficultyStage;
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,26 +35,37 @@ public:
 
 	void spawnHouse();
 
-	void changeDifficulty();
+	void harderDifficulty(EDifficultyStage stage);
+
+	UGameInstance* gameInstance;
 
 	float gameTime;
 	float currentTime;
-	float gameTimer;
+	float calculationTimer;
 	int houseNumber;
+
+	UPROPERTY(EditAnywhere, Category = "House spawning time")
+		float easySpawningTime;
+	UPROPERTY(EditAnywhere, Category = "House spawning time")
+		float mediumSpawningTime;
+	UPROPERTY(EditAnywhere, Category = "House spawning time")
+		float hardSpawningTime;
 
 	FString numberString;
 	FString numberString2;
 	FString numberString3;
+	FString numberString4;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
-		float timerTime;
-
+		float timeUntilSpawning;
 	UPROPERTY(EditAnywhere, Category = "Timer")
-		float timeDecreaseRatio;
+		float timeUntilSpawningReduction;
 
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float lowLimit;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
+	bool canSpawn = true;
 	bool allowTimeDoubling = true;
 	bool allowSpeedingUp = true;
 
@@ -54,9 +76,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawnable objects")
 		TArray<TSubclassOf<AHouseParent>> spawnableObjects;
 
-	//AGameModeBase *gamemode;
-
-
-	UPROPERTY(EditAnywhere, Category = "Present score")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
 		int presentsDelivered;
 };
