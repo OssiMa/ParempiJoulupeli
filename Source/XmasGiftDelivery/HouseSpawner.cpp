@@ -27,7 +27,7 @@ void AHouseSpawner::BeginPlay()
 
 	spawnHouse();
 
-	gameInstance = Cast<UGameInstance>(GEngine->GetWorld()->GetGameInstance());
+	//gameInstance = Cast<UGameInstance>(GEngine->GetWorld()->GetGameInstance());
 
 }
 
