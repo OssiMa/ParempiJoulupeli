@@ -64,6 +64,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float lowLimit;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
 	bool canSpawn = true;
 	bool allowTimeDoubling = true;
 	bool allowSpeedingUp = true;

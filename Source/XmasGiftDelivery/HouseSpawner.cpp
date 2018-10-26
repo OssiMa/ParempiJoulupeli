@@ -97,7 +97,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 void AHouseSpawner::spawnHouse() 
 {
-	if (gameInstance.showMainMenu = true) 
+	if (canSpawn) 
 	{
 		//Generate random number for the house spawner
 		houseNumber = FMath::RandRange(0, 2);
