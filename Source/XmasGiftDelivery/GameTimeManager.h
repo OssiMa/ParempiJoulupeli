@@ -37,11 +37,14 @@ public:
 	FTimerHandle gameTimeHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
-	float firstTimeCheck;
+		float firstTimeCheck;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
-	float secondTimeCheck;
+		float secondTimeCheck;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
-	float thirdTimeCheck;
+		float thirdTimeCheck;
 
 	int check;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Is timer on?")
+		bool timerOn;
 };
