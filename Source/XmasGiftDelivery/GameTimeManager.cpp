@@ -32,16 +32,25 @@ void AGameTimeManager::checkTime()
 	else if (check == 2 && houseSpawner->presentsDelivered >= 4 && houseSpawner->presentsDelivered < 6) 
 	{
 		houseSpawner->harderDifficulty(MEDIUM);
+		setTimer(secondTimeCheck);
 	}
 	else if (check == 3 && houseSpawner->presentsDelivered >= 6 && houseSpawner->presentsDelivered < 8) 
 	{
 		houseSpawner->harderDifficulty(HARD);
+		setTimer(thirdTimeCheck);
+		GetWorldTimerManager().ClearTimer(gameTimeHandle);
 	}
 	else 
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Nothing.");
 	}
 
-	GetWorldTimerManager().ClearTimer(gameTimeHandle);
+	//GetWorldTimerManager().ClearTimer(gameTimeHandle);
+}
+
+UFUNCTION()
+void AGameTimeManager::setTimer(float timeCheck) 
+{
+	GetWorldTimerManager().SetTimer(gameTimeHandle, this, &AGameTimeManager::checkTime, timeCheck, false), check++;
 }
 

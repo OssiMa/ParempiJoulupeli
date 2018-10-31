@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,7 +7,6 @@
 #include "Engine.h"
 #include "HouseSpawner.h"
 #include "GameTimeManager.generated.h"
-
 
 UCLASS()
 class XMASGIFTDELIVERY_API AGameTimeManager : public AActor
@@ -30,6 +27,9 @@ public:
 
 	UFUNCTION()
 		void checkTime();
+
+	UFUNCTION()
+		void setTimer(float timeCheck);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HouseSpawnerReference")
 		class AHouseSpawner* houseSpawner;
