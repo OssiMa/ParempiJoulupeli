@@ -1,6 +1,5 @@
 #include "HouseSpawner.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
-#include "GameFramework/GameModeBase.h"
 #include "Engine.h"
 
 
@@ -22,12 +21,7 @@ void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
-
-	spawnHouse();
-
-	//gameInstance = Cast<UGameInstance>(GetWorld()->GetGameInstance());
-
+	//AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 }
 
 // Called every frame
@@ -37,6 +31,11 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	if (canSpawn)
 	{
+		if (firstSpawned == false) 
+		{
+			spawnHouse();
+		}
+
 		currentTime = currentTime + 1 * DeltaTime;
 
 		calculationTimer = calculationTimer + 1 * DeltaTime;
@@ -68,21 +67,6 @@ void AHouseSpawner::Tick(float DeltaTime)
 			}
 		}
 
-		/*
-		if (gameTimer > 5 && gameTimer < 5.01f && presentsDelivered >= 2 || gameTimer > 20 && gameTimer < 20.01f && presentsDelivered >= 2)
-		{
-		//gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
-		//FTimespan::FromSeconds(gameTime);
-
-
-		//harderDifficulty(HARD);
-
-		//gameTime = GetWorld()->GetTimeSeconds();
-
-		allowTimeDoubling = false;
-		}
-		*/
-
 		if (timeUntilSpawning <= lowLimit)
 		{
 			timeUntilSpawning = lowLimit;
@@ -113,6 +97,11 @@ void AHouseSpawner::spawnHouse()
 
 	//Spawn the object
 	AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
+
+	if (firstSpawned == false) 
+	{
+		firstSpawned = true;
+	}
 }
 
 void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
