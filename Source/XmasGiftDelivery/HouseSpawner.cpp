@@ -10,16 +10,15 @@ AHouseSpawner::AHouseSpawner()
 	PrimaryActorTick.bCanEverTick = true;
 
 	currentTime = 0.0f;
-
-	spawnLocation.X = 200.0f;
-	//spawnLocation.Y = 0.0f;
-	spawnLocation.Z = -40.0f;
 }
 
 // Called when the game starts or when spawned
 void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	spawnLocation.X = spawnLocationX;
+	spawnLocation.Z = spawnLocationZ;
 
 	//AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 }

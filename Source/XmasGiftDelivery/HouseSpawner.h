@@ -58,6 +58,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
 		float hardSpawningTime;
 
+	UPROPERTY(EditAnywhere, Category = "House spawning location")
+		float spawnLocationX;
+	UPROPERTY(EditAnywhere, Category = "House spawning location")
+		float spawnLocationZ;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
 		int presentsDelivered;
 
