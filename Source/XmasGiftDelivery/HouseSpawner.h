@@ -44,6 +44,13 @@ public:
 	float calculationTimer;
 	int houseNumber;
 
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float timeUntilSpawning;
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float timeUntilSpawningReduction;
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float lowLimit;
+
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
 		float easySpawningTime;
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
@@ -51,21 +58,17 @@ public:
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
 		float hardSpawningTime;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
+		int presentsDelivered;
+
 	FString numberString;
 	FString numberString2;
 	FString numberString3;
 	FString numberString4;
 
-	UPROPERTY(EditAnywhere, Category = "Timer")
-		float timeUntilSpawning;
-	UPROPERTY(EditAnywhere, Category = "Timer")
-		float timeUntilSpawningReduction;
-
-	UPROPERTY(EditAnywhere, Category = "Timer")
-		float lowLimit;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Can house spawn?")
 		bool canSpawn;
+	bool firstSpawned;
 	bool allowTimeDoubling = true;
 	bool allowSpeedingUp = true;
 
@@ -75,7 +78,4 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Spawnable objects")
 		TArray<TSubclassOf<AHouseParent>> spawnableObjects;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Present score")
-		int presentsDelivered;
 };

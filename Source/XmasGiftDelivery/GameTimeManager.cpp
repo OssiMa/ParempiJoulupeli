@@ -20,32 +20,41 @@ void AGameTimeManager::BeginPlay()
 void AGameTimeManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (timerOn == false) 
+	{
+		GetWorldTimerManager().PauseTimer(gameTimeHandle);
+	}
+	else if (timerOn == true)
+	{
+		GetWorldTimerManager().UnPauseTimer(gameTimeHandle);
+	}
 }
 
 UFUNCTION()
 void AGameTimeManager::checkTime()
 {
+	//Check if there's need for harder difficulty
+
 	if (check == 1 && houseSpawner->presentsDelivered >= 2 && houseSpawner->presentsDelivered < 4)
 	{
 		houseSpawner->harderDifficulty(EASY);
+		setTimer(secondTimeCheck);
 	}
 	else if (check == 2 && houseSpawner->presentsDelivered >= 4 && houseSpawner->presentsDelivered < 6) 
 	{
 		houseSpawner->harderDifficulty(MEDIUM);
-		setTimer(secondTimeCheck);
+		setTimer(thirdTimeCheck);
 	}
 	else if (check == 3 && houseSpawner->presentsDelivered >= 6 && houseSpawner->presentsDelivered < 8) 
 	{
 		houseSpawner->harderDifficulty(HARD);
-		setTimer(thirdTimeCheck);
 		GetWorldTimerManager().ClearTimer(gameTimeHandle);
 	}
 	else 
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Nothing.");
 	}
-
-	//GetWorldTimerManager().ClearTimer(gameTimeHandle);
 }
 
 UFUNCTION()
