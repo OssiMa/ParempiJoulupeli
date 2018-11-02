@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "UnlockManager.h"
 
 
@@ -15,13 +13,23 @@ AUnlockManager::AUnlockManager()
 void AUnlockManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	day = FDateTime::Now().GetDay();
+	month = FDateTime::Now().GetMonth();
+	year = FDateTime::Now().GetYear();
 }
 
 // Called every frame
 void AUnlockManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void AUnlockManager::CompareDays() 
+{
+	if (day && month && year >= lastCheckedDate) 
+	{
+		//Unlock stuff
+	}
 }
 
