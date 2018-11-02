@@ -1,5 +1,7 @@
 #pragma once
 
+#include "OutputDeviceNull.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
@@ -23,6 +25,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
 	void CompareDays();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
@@ -38,4 +41,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Presents delivered")
 		int presentScore;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Presents delivered")
+		int scoreForUnlocking;
 };

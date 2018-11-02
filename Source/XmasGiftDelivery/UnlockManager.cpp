@@ -27,9 +27,12 @@ void AUnlockManager::Tick(float DeltaTime)
 
 void AUnlockManager::CompareDays() 
 {
-	if (day && month && year >= lastCheckedDate) 
+	if (presentScore >= scoreForUnlocking && day >= lastUnlockedDay)
 	{
-		//Unlock stuff
+		FEditorScriptExecutionGuard ScriptGuard;
+
+		FOutputDeviceNull ar;
+		CallFunctionByNameWithArguments(TEXT("SetUnlockedDay"), ar, NULL, true);
 	}
 }
 
