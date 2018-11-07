@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Engine.h"
 #include "GameFramework/GameModeBase.h"
 #include "UnlockManager.generated.h"
 
@@ -26,7 +27,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void CompareDays();
+		void CompareDays();
+	UFUNCTION(BlueprintCallable, Category = "Unlocked Day")
+		void SetUnlockedDay(int & dayCount);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
 		int day;
@@ -43,4 +46,11 @@ public:
 		int presentScore;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Presents delivered")
 		int scoreForUnlocking;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ploo")
+		int presentScorePloo;
+
+	int presentScorePloop;
+
+	FString numberString;
 };
