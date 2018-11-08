@@ -35,7 +35,6 @@ UFUNCTION()
 void AGameTimeManager::checkTime()
 {
 	//Check if there's need for harder difficulty
-
 	if (check == 1 && houseSpawner->presentsDelivered >= 2 && houseSpawner->presentsDelivered < 4)
 	{
 		houseSpawner->harderDifficulty(EASY);

@@ -1,3 +1,4 @@
+#include "OutputDeviceNull.h"
 #include "UnlockManager.h"
 
 
@@ -7,7 +8,7 @@ AUnlockManager::AUnlockManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	presentScorePloop = 21;
+	dayCheck = 0;
 }
 
 // Called when the game starts or when spawned
@@ -18,8 +19,6 @@ void AUnlockManager::BeginPlay()
 	day = FDateTime::Now().GetDay();
 	month = FDateTime::Now().GetMonth();
 	year = FDateTime::Now().GetYear();
-
-	SetUnlockedDay(presentScorePloop);
 }
 
 // Called every frame
@@ -28,23 +27,19 @@ void AUnlockManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AUnlockManager::CompareDays() 
+void AUnlockManager::CompareDays()
 {
-	if (presentScore >= scoreForUnlocking && day >= lastUnlockedDay)
+	if (dayCheck <= 25)
 	{
-		FEditorScriptExecutionGuard ScriptGuard;
+		if (presentScore >= scoreForUnlocking && day >= lastUnlockedDay)
+		{
+			SetUnlockedDay(1);
+		}
+		else if (month > lastSavedMonth && year > lastSavedYear)
+		{
+			SetUnlockedDay(1);
+		}
 
-		//const FString command = FString::Printf(TEXT("SetUnlockedDayP"), daycount);
-		FOutputDeviceNull ar;
-		this->CallFunctionByNameWithArguments(TEXT("SetUnlockedDay"), ar, NULL, true);
+		dayCheck++;
 	}
-}
-
-
-void AUnlockManager::SetUnlockedDay(int & dayCount) 
-{
-	//Do stuff here
-
-	numberString = FString::SanitizeFloat(presentScorePloo);
-	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Completed days is now ") + numberString);
 }
