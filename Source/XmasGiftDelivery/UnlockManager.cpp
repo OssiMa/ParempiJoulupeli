@@ -27,7 +27,7 @@ void AUnlockManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AUnlockManager::CompareDays() 
+void AUnlockManager::CompareDays()
 {
 	if (dayCheck <= 25)
 	{
