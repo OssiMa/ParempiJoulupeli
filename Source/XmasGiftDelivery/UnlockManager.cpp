@@ -1,5 +1,5 @@
-#include "OutputDeviceNull.h"
 #include "UnlockManager.h"
+#include "OutputDeviceNull.h"
 
 
 // Sets default values
