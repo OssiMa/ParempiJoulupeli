@@ -51,13 +51,12 @@ void AHouseSpawner::Tick(float DeltaTime)
 			gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 			FTimespan::FromSeconds(gameTime);
 
-			//timeUntilSpawning = pow (2, 1/gameTime);
-
 			if (allowTimeDoubling)
 			{
 				timeUntilSpawningReduction = timeUntilSpawningReduction - 0.1 * DeltaTime;
 			}
 
+			//Calculate reduction time for housespawner
 			if (timeUntilSpawningReduction <= 2.3f)
 			{
 				allowTimeDoubling = false;
@@ -103,6 +102,7 @@ void AHouseSpawner::spawnHouse()
 	}
 }
 
+//Choose harder difficulty if necessary
 void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 {
 	switch (stage)

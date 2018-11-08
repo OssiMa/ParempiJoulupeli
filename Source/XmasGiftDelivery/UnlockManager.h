@@ -1,10 +1,7 @@
 #pragma once
 
-#include "OutputDeviceNull.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Runtime/Engine/Classes/Engine/World.h"
 #include "Engine.h"
 #include "GameFramework/GameModeBase.h"
 #include "UnlockManager.generated.h"
@@ -26,10 +23,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Compare days and set unlocked days")
 		void CompareDays();
-	UFUNCTION(BlueprintCallable, Category = "Unlocked Day")
-		void SetUnlockedDay(int & dayCount);
+	UFUNCTION(BlueprintImplementableEvent)
+		void SetUnlockedDay(const int &dayCount);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
 		int day;
@@ -38,7 +35,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
 		int year;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
-		int lastCheckedDate;
+		int lastSavedMonth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
+		int lastSavedYear;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time")
 		int lastUnlockedDay;
 
@@ -47,10 +46,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Presents delivered")
 		int scoreForUnlocking;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ploo")
-		int presentScorePloo;
-
-	int presentScorePloop;
-
-	FString numberString;
+	int dayCheck;
 };
