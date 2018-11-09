@@ -34,12 +34,13 @@ void AUnlockManager::CompareDays()
 		if (presentScore >= scoreForUnlocking && day >= lastUnlockedDay)
 		{
 			SetUnlockedDay(1);
+			dayCheck++;
 		}
-		else if (month > lastSavedMonth && year > lastSavedYear)
+		else if (month < 12 && presentScore >= scoreForUnlocking)
 		{
 			SetUnlockedDay(1);
+			dayCheck++;
 		}
 
-		dayCheck++;
 	}
 }
