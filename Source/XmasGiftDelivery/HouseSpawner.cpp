@@ -10,16 +10,15 @@ AHouseSpawner::AHouseSpawner()
 	PrimaryActorTick.bCanEverTick = true;
 
 	currentTime = 0.0f;
-
-	spawnLocation.X = 200.0f;
-	//spawnLocation.Y = 0.0f;
-	spawnLocation.Z = -40.0f;
 }
 
 // Called when the game starts or when spawned
 void AHouseSpawner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	spawnLocation.X = spawnLocationX;
+	spawnLocation.Z = spawnLocationZ;
 
 	//AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 }
@@ -52,13 +51,12 @@ void AHouseSpawner::Tick(float DeltaTime)
 			gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 			FTimespan::FromSeconds(gameTime);
 
-			//timeUntilSpawning = pow (2, 1/gameTime);
-
 			if (allowTimeDoubling)
 			{
 				timeUntilSpawningReduction = timeUntilSpawningReduction - 0.1 * DeltaTime;
 			}
 
+			//Calculate reduction time for housespawner
 			if (timeUntilSpawningReduction <= 2.3f)
 			{
 				allowTimeDoubling = false;
@@ -104,6 +102,7 @@ void AHouseSpawner::spawnHouse()
 	}
 }
 
+//Choose harder difficulty if necessary
 void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 {
 	switch (stage)
