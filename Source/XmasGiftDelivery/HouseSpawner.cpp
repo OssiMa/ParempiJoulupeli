@@ -1,6 +1,7 @@
 #include "HouseSpawner.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Engine.h"
+#include "math.h"
 
 
 // Sets default values
@@ -20,6 +21,9 @@ void AHouseSpawner::BeginPlay()
 	spawnLocation.X = spawnLocationX;
 	spawnLocation.Z = spawnLocationZ;
 
+	allowTimeDoubling = true;
+	allowSpeedingUp = true;
+
 	//AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 }
 
@@ -30,7 +34,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	if (canSpawn)
 	{
-		if (firstSpawned == false) 
+		if (firstSpawned == false)
 		{
 			spawnHouse();
 		}
@@ -71,6 +75,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 			allowSpeedingUp = false;
 		}
 
+		//Debug messages
 		numberString2 = FString::SanitizeFloat(timeUntilSpawning);
 		GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
 
@@ -94,9 +99,9 @@ void AHouseSpawner::spawnHouse()
 	spawnParams.Instigator = Instigator;
 
 	//Spawn the object
-	AHouseParent* newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
+	AHouseParent *newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 
-	if (firstSpawned == false) 
+	if (firstSpawned == false)
 	{
 		firstSpawned = true;
 	}
@@ -124,3 +129,24 @@ void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 	GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("Timeuntilspawning is ") + numberString4);
 }
 
+void AHouseSpawner::makeDifficultyEasier() 
+{
+	easierDifficulty(timeUntilSpawningIncrease);
+}
+
+void AHouseSpawner::easierDifficulty(float easier)
+{
+	if (timeUntilSpawning < upperLimit)
+	{
+		timeUntilSpawning = timeUntilSpawning + easier;
+
+		if (timeUntilSpawning > upperLimit) 
+		{
+			timeUntilSpawning = upperLimit;
+		}
+	}
+	else
+	{
+		timeUntilSpawning = upperLimit;
+	}
+}

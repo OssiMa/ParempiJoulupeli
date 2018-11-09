@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "math.h"
 #include "HouseParent.h"
 #include "HouseSpawner.generated.h"
 
@@ -37,6 +36,11 @@ public:
 
 	void harderDifficulty(EDifficultyStage stage);
 
+	UFUNCTION(BlueprintCallable, Category = "Make difficulty easier")
+		void makeDifficultyEasier();
+
+	void easierDifficulty(float easier);
+
 	UGameInstance* gameInstance;
 
 	float gameTime;
@@ -49,7 +53,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float timeUntilSpawningReduction;
 	UPROPERTY(EditAnywhere, Category = "Timer")
+		float timeUntilSpawningIncrease;
+	UPROPERTY(EditAnywhere, Category = "Timer")
 		float lowLimit;
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float upperLimit;
 
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
 		float easySpawningTime;
@@ -74,8 +82,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Can house spawn?")
 		bool canSpawn;
 	bool firstSpawned;
-	bool allowTimeDoubling = true;
-	bool allowSpeedingUp = true;
+	bool allowTimeDoubling;
+	bool allowSpeedingUp;
 
 	FVector spawnLocation;
 
