@@ -159,6 +159,8 @@ void AHouseSpawner::easierDifficulty(float easier)
 	{
 		timeUntilSpawning = upperLimit;
 	}
+
+	checkSpawnTime(timeUntilSpawning);
 }
 
 void AHouseSpawner::unlockHarderDifficulty(float harder) 
