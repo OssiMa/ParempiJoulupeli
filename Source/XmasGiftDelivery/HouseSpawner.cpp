@@ -24,6 +24,8 @@ void AHouseSpawner::BeginPlay()
 	allowTimeDoubling = true;
 	allowSpeedingUp = true;
 
+	checkSpawnTime(timeUntilSpawning);
+
 	//AGameModeBase *gameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode());
 }
 
@@ -61,7 +63,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 			}
 
 			//Calculate reduction time for housespawner
-			if (timeUntilSpawningReduction <= 2.3f)
+			if (timeUntilSpawningReduction <= limitBeforeReduction)
 			{
 				allowTimeDoubling = false;
 				timeUntilSpawningReduction = timeUntilSpawningReduction - 0.02 * DeltaTime;
@@ -82,6 +84,14 @@ void AHouseSpawner::Tick(float DeltaTime)
 		numberString3 = FString::SanitizeFloat(calculationTimer);
 		GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
 	}
+}
+
+void AHouseSpawner::checkSpawnTime(float spawnTime) 
+{
+	limitBeforeReduction = logf(spawnTime) / logf(2);
+
+	numberString5 = FString::SanitizeFloat(limitBeforeReduction);
+	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("LimitBeforeReduction is now ") + numberString5);
 }
 
 void AHouseSpawner::spawnHouse()
@@ -149,4 +159,9 @@ void AHouseSpawner::easierDifficulty(float easier)
 	{
 		timeUntilSpawning = upperLimit;
 	}
+}
+
+void AHouseSpawner::unlockHarderDifficulty(float harder) 
+{
+	timeUntilSpawning = timeUntilSpawning - harder;
 }

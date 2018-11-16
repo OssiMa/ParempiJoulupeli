@@ -31,15 +31,14 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	void spawnHouse();
-
 	void harderDifficulty(EDifficultyStage stage);
-
 	UFUNCTION(BlueprintCallable, Category = "Make difficulty easier")
 		void makeDifficultyEasier();
-
 	void easierDifficulty(float easier);
+	UFUNCTION(BlueprintCallable, Category = "Unlock harder difficulty")
+		void unlockHarderDifficulty(float harder);
+	void checkSpawnTime(float spawnTime);
 
 	UGameInstance* gameInstance;
 
@@ -58,6 +57,8 @@ public:
 		float lowLimit;
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float upperLimit;
+	UPROPERTY(EditAnywhere, Category = "Timer")
+		float limitBeforeReduction;
 
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
 		float easySpawningTime;
@@ -78,6 +79,7 @@ public:
 	FString numberString2;
 	FString numberString3;
 	FString numberString4;
+	FString numberString5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Can house spawn?")
 		bool canSpawn;
