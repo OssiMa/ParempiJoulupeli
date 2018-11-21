@@ -27,4 +27,6 @@ public:
 
 	UFUNCTION()
 		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyOndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	void applyHouseSpeed(float moveSpeed);
 };

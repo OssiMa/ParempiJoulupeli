@@ -35,17 +35,17 @@ UFUNCTION()
 void AGameTimeManager::checkTime()
 {
 	//Check if there's need for harder difficulty
-	if (check == 1 && houseSpawner->presentsDelivered >= 2 && houseSpawner->presentsDelivered < 4)
+	if (check == 1 && houseSpawner->presentsDelivered >= firstCheckPresentScore)
 	{
 		houseSpawner->harderDifficulty(EASY);
 		setTimer(secondTimeCheck);
 	}
-	else if (check == 2 && houseSpawner->presentsDelivered >= 4 && houseSpawner->presentsDelivered < 6) 
+	else if (check == 2 && houseSpawner->presentsDelivered >= secondCheckPresentScore) 
 	{
 		houseSpawner->harderDifficulty(MEDIUM);
 		setTimer(thirdTimeCheck);
 	}
-	else if (check == 3 && houseSpawner->presentsDelivered >= 6 && houseSpawner->presentsDelivered < 8) 
+	else if (check == 3 && houseSpawner->presentsDelivered >= thirdCheckPresentScore) 
 	{
 		houseSpawner->harderDifficulty(HARD);
 		GetWorldTimerManager().ClearTimer(gameTimeHandle);

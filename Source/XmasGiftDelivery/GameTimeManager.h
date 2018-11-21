@@ -43,6 +43,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
 		float thirdTimeCheck;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
+		int firstCheckPresentScore;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
+		int secondCheckPresentScore;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
+		int thirdCheckPresentScore;
+
 	int check;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Is timer on?")

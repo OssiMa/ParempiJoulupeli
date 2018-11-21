@@ -37,3 +37,8 @@ void AHouseParent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		Destroy();
 	}
 }
+
+void AHouseParent::applyHouseSpeed(float moveSpeed) 
+{
+
+}
