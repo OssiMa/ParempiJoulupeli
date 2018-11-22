@@ -61,7 +61,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 			}
 
 			//Calculate reduction time for housespawner
-			if (timeUntilSpawningReduction <= limitBeforeReduction)
+			if (timeUntilSpawningReduction <= limitBeforeReduction && allowSpeedingUp)
 			{
 				allowTimeDoubling = false;
 				timeUntilSpawningReduction = timeUntilSpawningReduction - 0.02 * DeltaTime;
