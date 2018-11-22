@@ -79,7 +79,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
 		float houseMoveSpeedModifierY;
-	float houseMoveSpeedModifier;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
+		float houseMoveSpeedModifier;
 
 	FString numberString;
 	FString numberString2;
