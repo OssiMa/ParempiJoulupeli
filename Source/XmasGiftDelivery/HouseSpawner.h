@@ -39,6 +39,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Unlock harder difficulty")
 		void unlockHarderDifficulty(float harder);
 	void checkSpawnTime(float spawnTime);
+	UFUNCTION(BlueprintImplementableEvent)
+		void applySpeedModifier(const float &speed);
 
 	UGameInstance* gameInstance;
 
