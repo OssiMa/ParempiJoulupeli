@@ -111,6 +111,8 @@ void AHouseSpawner::spawnHouse()
 	//Spawn the object
 	AHouseParent *newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 
+	applySpeedModifier(houseMoveSpeedModifier);
+
 	if (firstSpawned == false)
 	{
 		firstSpawned = true;
