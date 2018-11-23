@@ -46,6 +46,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 		if (currentTime >= timeUntilSpawning)
 		{
+			//timeUntilSpawningTemp = timeUntilSpawning;
 			spawnHouse();
 
 			currentTime = 0.0f;
@@ -153,6 +154,7 @@ void AHouseSpawner::easierDifficulty(float easier)
 {
 	if (timeUntilSpawning < upperLimit)
 	{
+		allowTimerCalculation = false;
 		timeUntilSpawning = timeUntilSpawning + easier;
 
 		if (timeUntilSpawning > upperLimit) 
@@ -160,12 +162,15 @@ void AHouseSpawner::easierDifficulty(float easier)
 			timeUntilSpawning = upperLimit;
 		}
 
+		allowTimerCalculation = true;
 		checkSpawnTime(timeUntilSpawning);
 	}
 	else
 	{
+		allowTimerCalculation = false;
 		timeUntilSpawning = upperLimit;
 
+		allowTimerCalculation = true;
 		checkSpawnTime(timeUntilSpawning);
 	}
 }
