@@ -23,6 +23,7 @@ void AHouseSpawner::BeginPlay()
 
 	allowTimeDoubling = true;
 	allowSpeedingUp = true;
+	allowTimerCalculation = true;
 
 	checkSpawnTime(timeUntilSpawning);
 }
@@ -37,11 +38,11 @@ void AHouseSpawner::Tick(float DeltaTime)
 		if (firstSpawned == false)
 		{
 			spawnHouse();
+
+			firstSpawned = true;
 		}
 
 		currentTime = currentTime + 1 * DeltaTime;
-
-		calculationTimer = calculationTimer + 1 * DeltaTime;
 
 		if (currentTime >= timeUntilSpawning)
 		{
@@ -50,39 +51,46 @@ void AHouseSpawner::Tick(float DeltaTime)
 			currentTime = 0.0f;
 		}
 
-		if (calculationTimer >= 5)
+		if (allowTimerCalculation) 
 		{
-			gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
-			FTimespan::FromSeconds(gameTime);
+			calculationTimer = calculationTimer + 1 * DeltaTime;	
 
-			if (allowTimeDoubling)
+			if (calculationTimer >= 5)
 			{
-				timeUntilSpawningReduction = timeUntilSpawningReduction - 0.1 * DeltaTime;
+				gameTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+				FTimespan::FromSeconds(gameTime);
+
+				if (allowTimeDoubling)
+				{
+					timeUntilSpawningReduction = timeUntilSpawningReduction - 0.1 * DeltaTime;
+				}
+
+				//Calculate reduction time for housespawner
+				if (timeUntilSpawningReduction <= limitBeforeReduction && allowSpeedingUp)
+				{
+					allowTimeDoubling = false;
+					timeUntilSpawningReduction = timeUntilSpawningReduction - 0.02 * DeltaTime;
+					timeUntilSpawning = pow(2, timeUntilSpawningReduction);
+
+					houseMoveSpeedModifier = houseMoveSpeedModifier + houseMoveSpeedModifierY * DeltaTime;
+				}
 			}
 
-			//Calculate reduction time for housespawner
-			if (timeUntilSpawningReduction <= limitBeforeReduction && allowSpeedingUp)
+			if (timeUntilSpawning <= lowLimit)
 			{
-				allowTimeDoubling = false;
-				timeUntilSpawningReduction = timeUntilSpawningReduction - 0.02 * DeltaTime;
-				timeUntilSpawning = pow(2, timeUntilSpawningReduction);
+				timeUntilSpawning = lowLimit;
+				allowSpeedingUp = false;
 
-				houseMoveSpeedModifier = houseMoveSpeedModifier + houseMoveSpeedModifierY * DeltaTime;
+				allowTimerCalculation = false;
 			}
-		}
 
-		if (timeUntilSpawning <= lowLimit)
-		{
-			timeUntilSpawning = lowLimit;
-			allowSpeedingUp = false;
-		}
+			//Debug messages
+			numberString2 = FString::SanitizeFloat(timeUntilSpawning);
+			GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
 
-		//Debug messages
-		numberString2 = FString::SanitizeFloat(timeUntilSpawning);
-		GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
-
-		numberString3 = FString::SanitizeFloat(calculationTimer);
-		GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
+			numberString3 = FString::SanitizeFloat(calculationTimer);
+			GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
+		}	
 	}
 }
 
@@ -112,11 +120,6 @@ void AHouseSpawner::spawnHouse()
 	AHouseParent *newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 
 	applySpeedModifier(houseMoveSpeedModifier);
-
-	if (firstSpawned == false)
-	{
-		firstSpawned = true;
-	}
 }
 
 //Choose harder difficulty if necessary

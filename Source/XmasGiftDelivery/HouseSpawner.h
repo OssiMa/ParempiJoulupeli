@@ -93,6 +93,7 @@ public:
 	bool firstSpawned;
 	bool allowTimeDoubling;
 	bool allowSpeedingUp;
+	bool allowTimerCalculation;
 
 	FVector spawnLocation;
 
