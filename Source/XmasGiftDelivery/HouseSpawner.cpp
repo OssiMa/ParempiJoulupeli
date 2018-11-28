@@ -129,20 +129,18 @@ void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 	switch (stage)
 	{
 	case EASY:
-		timeUntilSpawning = easySpawningTime;
+		timeUntilSpawningReduction = logf(easySpawningTime) / logf(2);
+		applySpeedModifier(houseMoveSpeedModifier);
 		break;
 	case MEDIUM:
-		timeUntilSpawning = mediumSpawningTime;
+		timeUntilSpawningReduction = logf(mediumSpawningTime) / logf(2);
 		break;
 	case HARD:
-		timeUntilSpawning = hardSpawningTime;
+		timeUntilSpawningReduction = logf(hardSpawningTime) / logf(2);
 		break;
 	default:
 		break;
 	}
-
-	numberString4 = FString::SanitizeFloat(timeUntilSpawning);
-	GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("Timeuntilspawning is ") + numberString4);
 }
 
 void AHouseSpawner::makeDifficultyEasier() 
@@ -155,24 +153,23 @@ void AHouseSpawner::easierDifficulty(float easier)
 	if (timeUntilSpawning < upperLimit)
 	{
 		allowTimerCalculation = false;
-		timeUntilSpawning = timeUntilSpawning + easier;
+		timeUntilSpawningReduction = timeUntilSpawningReduction + easier;
 
-		if (timeUntilSpawning > upperLimit) 
+		
+		if (pow(2, timeUntilSpawningReduction) > upperLimit)
 		{
-			timeUntilSpawning = upperLimit;
+			timeUntilSpawningReduction = logf(upperLimit) / logf(2);
 		}
 
-		allowTimerCalculation = true;
-		checkSpawnTime(timeUntilSpawning);
+		timeUntilSpawning = pow(2, timeUntilSpawningReduction);
+		
+		if (timeUntilSpawningReduction > limitBeforeReduction) 
+		{
+			checkSpawnTime(timeUntilSpawning);
+		}
 	}
-	else
-	{
-		allowTimerCalculation = false;
-		timeUntilSpawning = upperLimit;
 
-		allowTimerCalculation = true;
-		checkSpawnTime(timeUntilSpawning);
-	}
+	allowTimerCalculation = true;
 }
 
 void AHouseSpawner::unlockHarderDifficulty(float harder) 
