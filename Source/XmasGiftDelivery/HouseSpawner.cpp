@@ -7,7 +7,6 @@
 // Sets default values
 AHouseSpawner::AHouseSpawner()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	currentTime = 0.0f;
@@ -46,6 +45,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 		if (currentTime >= timeUntilSpawning)
 		{
+			//timeUntilSpawningTemp = timeUntilSpawning;
 			spawnHouse();
 
 			currentTime = 0.0f;
@@ -94,6 +94,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 	}
 }
 
+//Calculate the limit when reduction modifier starts to be applied into house spawning time
 void AHouseSpawner::checkSpawnTime(float spawnTime) 
 {
 	limitBeforeReduction = logf(spawnTime) / logf(2);
@@ -119,29 +120,28 @@ void AHouseSpawner::spawnHouse()
 	//Spawn the object
 	AHouseParent *newObject = GetWorld()->SpawnActor<AHouseParent>(spawnableObjects[houseNumber], spawnLocation, spawnRotation, spawnParams);
 
+	//Apply house speed modifier
 	applySpeedModifier(houseMoveSpeedModifier);
 }
 
-//Choose harder difficulty if necessary
+//Choose harder difficulty for spawning houses if necessary
 void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 {
 	switch (stage)
 	{
 	case EASY:
-		timeUntilSpawning = easySpawningTime;
+		timeUntilSpawningReduction = logf(easySpawningTime) / logf(2);
+		applySpeedModifier(houseMoveSpeedModifier);
 		break;
 	case MEDIUM:
-		timeUntilSpawning = mediumSpawningTime;
+		timeUntilSpawningReduction = logf(mediumSpawningTime) / logf(2);
 		break;
 	case HARD:
-		timeUntilSpawning = hardSpawningTime;
+		timeUntilSpawningReduction = logf(hardSpawningTime) / logf(2);
 		break;
 	default:
 		break;
 	}
-
-	numberString4 = FString::SanitizeFloat(timeUntilSpawning);
-	GEngine->AddOnScreenDebugMessage(-2, 2.f, FColor::Red, TEXT("Timeuntilspawning is ") + numberString4);
 }
 
 void AHouseSpawner::makeDifficultyEasier() 
@@ -149,25 +149,30 @@ void AHouseSpawner::makeDifficultyEasier()
 	easierDifficulty(timeUntilSpawningIncrease);
 }
 
+//Calculate easier difficulty for spawning houses
 void AHouseSpawner::easierDifficulty(float easier)
 {
 	if (timeUntilSpawning < upperLimit)
 	{
-		timeUntilSpawning = timeUntilSpawning + easier;
+		allowTimerCalculation = false;
+		timeUntilSpawningReduction = timeUntilSpawningReduction + easier;
 
-		if (timeUntilSpawning > upperLimit) 
+		//If reduction goes higher than upperlimit, calculate reduction to correspond upperlimit
+		if (pow(2, timeUntilSpawningReduction) > upperLimit)
 		{
-			timeUntilSpawning = upperLimit;
+			timeUntilSpawningReduction = logf(upperLimit) / logf(2);
 		}
 
-		checkSpawnTime(timeUntilSpawning);
+		//Apply new reduction into spawn time once
+		timeUntilSpawning = pow(2, timeUntilSpawningReduction);
+		
+		if (timeUntilSpawningReduction > limitBeforeReduction) 
+		{
+			checkSpawnTime(timeUntilSpawning);
+		}
 	}
-	else
-	{
-		timeUntilSpawning = upperLimit;
 
-		checkSpawnTime(timeUntilSpawning);
-	}
+	allowTimerCalculation = true;
 }
 
 void AHouseSpawner::unlockHarderDifficulty(float harder) 

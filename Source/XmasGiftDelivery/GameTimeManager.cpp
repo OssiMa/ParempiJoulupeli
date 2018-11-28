@@ -34,16 +34,18 @@ void AGameTimeManager::Tick(float DeltaTime)
 UFUNCTION()
 void AGameTimeManager::checkTime()
 {
+	GetWorldTimerManager().ClearTimer(gameTimeHandle);
+
 	//Check if there's need for harder difficulty
 	if (check == 1 && houseSpawner->presentsDelivered >= firstCheckPresentScore)
 	{
 		houseSpawner->harderDifficulty(EASY);
-		setTimer(secondTimeCheck);
+		//setTimer(firstTimeCheck);
 	}
 	else if (check == 2 && houseSpawner->presentsDelivered >= secondCheckPresentScore) 
 	{
 		houseSpawner->harderDifficulty(MEDIUM);
-		setTimer(thirdTimeCheck);
+		setTimer(firstTimeCheck);
 	}
 	else if (check == 3 && houseSpawner->presentsDelivered >= thirdCheckPresentScore) 
 	{

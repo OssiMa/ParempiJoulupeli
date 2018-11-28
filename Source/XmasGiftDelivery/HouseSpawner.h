@@ -61,6 +61,7 @@ public:
 		float upperLimit;
 	UPROPERTY(EditAnywhere, Category = "Timer")
 		float limitBeforeReduction;
+	float timeUntilSpawningTemp;
 
 	UPROPERTY(EditAnywhere, Category = "House spawning time")
 		float easySpawningTime;
