@@ -3,7 +3,6 @@
 #include "Engine.h"
 #include "math.h"
 
-
 // Sets default values
 AHouseSpawner::AHouseSpawner()
 {
@@ -45,7 +44,6 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 		if (currentTime >= timeUntilSpawning)
 		{
-			//timeUntilSpawningTemp = timeUntilSpawning;
 			spawnHouse();
 
 			currentTime = 0.0f;
@@ -146,11 +144,11 @@ void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 
 void AHouseSpawner::makeDifficultyEasier() 
 {
-	easierDifficulty(timeUntilSpawningIncrease);
+	easierDifficulty(timeUntilSpawningIncrease, houseMoveSpeedReduction);
 }
 
 //Calculate easier difficulty for spawning houses
-void AHouseSpawner::easierDifficulty(float easier)
+void AHouseSpawner::easierDifficulty(float easier, float reduction)
 {
 	if (timeUntilSpawning < upperLimit)
 	{
@@ -165,7 +163,7 @@ void AHouseSpawner::easierDifficulty(float easier)
 
 		//Apply new reduction into spawn time once
 		timeUntilSpawning = pow(2, timeUntilSpawningReduction);
-		
+
 		if (timeUntilSpawningReduction > limitBeforeReduction) 
 		{
 			checkSpawnTime(timeUntilSpawning);
@@ -173,6 +171,14 @@ void AHouseSpawner::easierDifficulty(float easier)
 	}
 
 	allowTimerCalculation = true;
+
+	//Calculate new move speed for houses
+	houseMoveSpeedModifier = houseMoveSpeedModifier - reduction;
+
+	if (houseMoveSpeedModifier <= 0) 
+	{
+		houseMoveSpeedModifier = 0;
+	}
 }
 
 void AHouseSpawner::unlockHarderDifficulty(float harder) 
