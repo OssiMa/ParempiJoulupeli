@@ -35,7 +35,7 @@ public:
 	void harderDifficulty(EDifficultyStage stage);
 	UFUNCTION(BlueprintCallable, Category = "Make difficulty easier")
 		void makeDifficultyEasier();
-	void easierDifficulty(float easier);
+	void easierDifficulty(float easier, float reduction);
 	UFUNCTION(BlueprintCallable, Category = "Unlock harder difficulty")
 		void unlockHarderDifficulty(float harder);
 	void checkSpawnTime(float spawnTime);
@@ -80,6 +80,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
 		float houseMoveSpeedModifierY;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
+		float houseMoveSpeedReduction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
 		float houseMoveSpeedModifier;
 

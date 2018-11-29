@@ -1,4 +1,8 @@
 #include "GameTimeManager.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "TimerManager.h"
+#include "Engine.h"
+#include "HouseSpawner.h"
 
 
 // Sets default values

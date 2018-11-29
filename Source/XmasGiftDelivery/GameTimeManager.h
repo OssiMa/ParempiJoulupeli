@@ -2,10 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Runtime/Engine/Classes/Engine/World.h"
-#include "TimerManager.h"
-#include "Engine.h"
-#include "HouseSpawner.h"
 #include "GameTimeManager.generated.h"
 
 UCLASS()
