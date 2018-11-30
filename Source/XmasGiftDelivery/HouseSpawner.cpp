@@ -124,9 +124,10 @@ void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 {
 	switch (stage)
 	{
-	case EASY:
+	case HARD:
 		timeUntilSpawningReduction = logf(easySpawningTime) / logf(2);
-		applySpeedModifier(harderHouseMoveSpeedModifier);
+		houseMoveSpeedModifier = houseMoveSpeedModifier + harderHouseMoveSpeedModifier;
+		applySpeedModifier(houseMoveSpeedModifier);
 		break;
 	default:
 		break;
