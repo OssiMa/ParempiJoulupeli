@@ -33,6 +33,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 
 	if (canSpawn)
 	{
+		//Spawn the first house
 		if (firstSpawned == false)
 		{
 			spawnHouse();
@@ -40,6 +41,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 			firstSpawned = true;
 		}
 
+		//Timer for spawning more houses
 		currentTime = currentTime + 1 * DeltaTime;
 
 		if (currentTime >= timeUntilSpawning)
@@ -74,6 +76,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 				}
 			}
 
+			//Set house spawning time to low limit if it's below the lowest value
 			if (timeUntilSpawning <= lowLimit)
 			{
 				timeUntilSpawning = lowLimit;
@@ -82,10 +85,7 @@ void AHouseSpawner::Tick(float DeltaTime)
 				allowTimerCalculation = false;
 			}
 
-			//Debug messages
-			numberString2 = FString::SanitizeFloat(timeUntilSpawning);
-			GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Timer is now: ") + numberString2);
-
+			//Debug message
 			numberString3 = FString::SanitizeFloat(calculationTimer);
 			GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("Game has been running ") + numberString3, TEXT(" seconds."));
 		}	
@@ -96,9 +96,6 @@ void AHouseSpawner::Tick(float DeltaTime)
 void AHouseSpawner::checkSpawnTime(float spawnTime) 
 {
 	limitBeforeReduction = logf(spawnTime) / logf(2);
-
-	numberString5 = FString::SanitizeFloat(limitBeforeReduction);
-	GEngine->AddOnScreenDebugMessage(-4, 2.f, FColor::Red, TEXT("LimitBeforeReduction is now ") + numberString5);
 }
 
 void AHouseSpawner::spawnHouse()
@@ -129,13 +126,7 @@ void AHouseSpawner::harderDifficulty(EDifficultyStage stage)
 	{
 	case EASY:
 		timeUntilSpawningReduction = logf(easySpawningTime) / logf(2);
-		applySpeedModifier(houseMoveSpeedModifier);
-		break;
-	case MEDIUM:
-		timeUntilSpawningReduction = logf(mediumSpawningTime) / logf(2);
-		break;
-	case HARD:
-		timeUntilSpawningReduction = logf(hardSpawningTime) / logf(2);
+		applySpeedModifier(harderHouseMoveSpeedModifier);
 		break;
 	default:
 		break;
@@ -175,10 +166,12 @@ void AHouseSpawner::easierDifficulty(float easier, float reduction)
 	//Calculate new move speed for houses
 	houseMoveSpeedModifier = houseMoveSpeedModifier - reduction;
 
-	if (houseMoveSpeedModifier <= 0) 
+	if (houseMoveSpeedModifier <= 0)
 	{
 		houseMoveSpeedModifier = 0;
 	}
+
+	applySpeedModifier(houseMoveSpeedModifier);
 }
 
 void AHouseSpawner::unlockHarderDifficulty(float harder) 
