@@ -84,12 +84,12 @@ public:
 		float houseMoveSpeedReduction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
 		float houseMoveSpeedModifier;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed modifier")
+		float harderHouseMoveSpeedModifier;
 
 	FString numberString;
-	FString numberString2;
 	FString numberString3;
 	FString numberString4;
-	FString numberString5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Can house spawn?")
 		bool canSpawn;
