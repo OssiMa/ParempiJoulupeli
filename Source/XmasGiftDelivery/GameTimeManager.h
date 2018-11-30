@@ -2,10 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Runtime/Engine/Classes/Engine/World.h"
-#include "TimerManager.h"
-#include "Engine.h"
-#include "HouseSpawner.h"
 #include "GameTimeManager.generated.h"
 
 UCLASS()
@@ -28,9 +24,6 @@ public:
 	UFUNCTION()
 		void checkTime();
 
-	UFUNCTION()
-		void setTimer(float timeCheck);
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HouseSpawnerReference")
 		class AHouseSpawner* houseSpawner;
 
@@ -41,12 +34,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
 		int firstCheckPresentScore;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
-		int secondCheckPresentScore;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Time checks")
-		int thirdCheckPresentScore;
-
-	int check;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Is timer on?")
 		bool timerOn;
